@@ -89,7 +89,7 @@ func main() {
   client := domainr.NewClient(clientID)
 
   // Get the status of domainr.com
-  domain, err := client.GetStatus("domainr.com")
+  domain, err := client.GetSingleStatus("domainr.com")
   if err != nil {
       fmt.Println(error)
       os.Exit(1)

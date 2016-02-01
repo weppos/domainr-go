@@ -23,19 +23,19 @@ func init() {
 	}
 }
 
-func TestLivePrivateGetStatus(t *testing.T) {
+func TestLiveGetStatus(t *testing.T) {
 	if !domainrLiveTest {
 		t.Skip("skipping live test")
 	}
 
 	client := NewClient(domainrClientID)
 
-	statusResponse, err := client.getStatus(domainrStatusDomains)
+	statusResponse, err := client.GetStatus(domainrStatusDomains)
 	fmt.Println(err)
 	fmt.Println(statusResponse)
 }
 
-func TestLiveGetStatus(t *testing.T) {
+func TestLiveGetSingleStatus(t *testing.T) {
 	if !domainrLiveTest {
 		t.Skip("skipping live test")
 	}
@@ -43,7 +43,7 @@ func TestLiveGetStatus(t *testing.T) {
 	client := NewClient(domainrClientID)
 	var domain *Domain
 
-	domain, err := client.GetStatus(domainrStatusDomains)
+	domain, err := client.GetSingleStatus(domainrStatusDomains)
 	fmt.Println(err)
 	fmt.Println(domain)
 }
