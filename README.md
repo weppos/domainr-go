@@ -6,6 +6,15 @@ A Go client for the [Domainr API](http://domainr.build/).
 [![GoDoc](https://godoc.org/github.com/weppos/domainr-go/domainr?status.svg)](https://godoc.org/github.com/weppos/domainr-go/domainr)
 
 
+## :warning: Development Warning
+
+This library is currently under development, therefore the methods and the implementation should be considered a work-in-progress. Changes in the method naming, method signatures, public or internal APIs may happen at any time.
+
+Use this library at your own risk. :boom:
+
+The test suite currently performs live HTTP calls to Domainr, offline tests will be added soon. HTTP error handling is basic and understand the most common use cases.
+
+
 ## Getting started
 
 ```shell
