@@ -2,6 +2,8 @@
 
 A Go client for the [Domainr API](http://domainr.build/).
 
+[![Build Status](https://travis-ci.org/weppos/domainr-go.svg?branch=master)](https://travis-ci.org/weppos/domainr-go)
+
 
 ## Getting started
 
