@@ -18,7 +18,7 @@ const (
 	// This is a pro-forma convention given that Go dependencies
 	// tends to be fetched directly from the repo.
 	// It is also used in the user-agent identify the client.
-	libraryVersion = "0.0.1"
+	libraryVersion = "0.1.0"
 
 	// baseURL is the Domainr API URL.
 	baseURL = "https://api.domainr.com/"
