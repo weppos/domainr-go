@@ -105,10 +105,10 @@ type errorMessage struct {
 }
 
 func (c *Client) checkResponse(resp *http.Response) error {
-	// {"message":"unauthorized: invalid API client ID"}
 	switch resp.StatusCode {
 	case 200:
 		return nil
+	// {"message":"unauthorized: invalid API client ID"}
 	default:
 		message := errorMessage{}
 		body, err := ioutil.ReadAll(resp.Body)
