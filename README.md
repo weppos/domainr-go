@@ -10,12 +10,6 @@ $ git clone git@github.com:weppos/domainr-go.git
 $ cd domainr-go
 ```
 
-or download it as a Go dependency
-
-```shell
-$ go get weppos/domainr-go
-```
-
 Run the test suite.
 
 
@@ -66,4 +60,38 @@ $ DOMAINR_STATUS_DOMAINS=dnsimple.com,domainr.com go test ./... -v
 --- PASS: TestLiveGetStatus (0.26s)
 PASS
 ok  	github.com/weppos/domainr-go/domainr	0.772s
+```
+
+## Installation
+
+```shell
+$ go get github.com/weppos/domainr-go/domainr
+```
+
+## Usage
+
+```go
+package main
+
+import (
+    "fmt"
+    "os"
+
+    "github.com/weppos/domainr-go/domainr"
+)
+
+func main() {
+  clientID := "some-magic-client-id"
+
+  client := domainr.NewClient(clientID)
+
+  // Get the status of domainr.com
+  domain, err := client.GetStatus("domainr.com")
+  if err != nil {
+      fmt.Println(error)
+      os.Exit(1)
+  }
+
+  fmt.Printf("%s: %s", domain.Name, domain.Summary)
+}
 ```
