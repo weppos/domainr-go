@@ -12,8 +12,6 @@ This library is currently under development, therefore the methods and the imple
 
 Use this library at your own risk. :boom:
 
-The test suite currently performs live HTTP calls to Domainr, offline tests will be added soon. HTTP error handling is basic and understand the most common use cases.
-
 
 ## Getting started
 
