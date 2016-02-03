@@ -21,7 +21,7 @@ const (
 	libraryVersion = "0.1.0"
 
 	// baseURL is the Domainr API URL.
-	baseURL = "https://api.domainr.com/"
+	defaultBaseURL = "https://api.domainr.com/"
 
 	// userAgent represents the user agent used
 	// when communicating with the Domainr API.
@@ -36,11 +36,14 @@ type Client struct {
 
 	// ClientID token used for authentication.
 	ClientID string
+
+	// BaseURL for API requests.
+	BaseURL string
 }
 
 // NewClient returns a new Domainr API client.
 func NewClient(clientID string) *Client {
-	client := &Client{ClientID: clientID, HttpClient: &http.Client{}}
+	client := &Client{ClientID: clientID, BaseURL: defaultBaseURL, HttpClient: &http.Client{}}
 	return client
 }
 
@@ -51,7 +54,7 @@ func NewClient(clientID string) *Client {
 // Domainr only requires GET requests, therefore this method assumes you want GET
 // and also doesn't provide a way to specify a payload.
 func (c *Client) NewRequest(path string) (*http.Request, error) {
-	u, err := url.Parse(baseURL + path)
+	u, err := url.Parse(c.BaseURL + path)
 	if err != nil {
 		return nil, fmt.Errorf("Error parsing request URL: %s", err)
 	}

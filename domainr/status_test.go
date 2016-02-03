@@ -2,7 +2,10 @@ package domainr
 
 import (
 	"fmt"
+	"net/http"
+	"net/url"
 	"os"
+	"reflect"
 	"testing"
 )
 
@@ -23,7 +26,68 @@ func init() {
 	}
 }
 
-func TestLiveGetStatus(t *testing.T) {
+func TestClient_GetStatus(t *testing.T) {
+	setupMockServer()
+	defer teardownMockServer()
+
+	mux.HandleFunc("/v2/status", func(w http.ResponseWriter, r *http.Request) {
+		if want, got := "GET", r.Method; want != got {
+			t.Errorf("GetStatus() METHOD expected to be `%v`, got `%v`", want, got)
+		}
+		if want, got := "application/json", r.Header.Get("Accept"); want != got {
+			t.Errorf("GetStatus() Content-Type expected to be `%s`, got `%s`", want, got)
+		}
+		if want, got := userAgent, r.Header.Get("User-Agent"); want != got {
+			t.Errorf("GetStatus() User-Agent expected to be `%s`, got `%s`", want, got)
+		}
+
+		reqUrl := r.URL
+		if want, got := "/v2/status", reqUrl.Path; want != got {
+			t.Errorf("GetStatus() /path expected to be `%s`, got `%s`", want, got)
+		}
+		wantQuery, _ := url.ParseQuery(fmt.Sprintf("client_id=%s&domain=example.com.example.org", client.ClientID))
+		if want, got := wantQuery, reqUrl.Query(); !reflect.DeepEqual(want, got) {
+			t.Errorf("GetStatus() ?query expected to be `%s`, got `%s`", want, got)
+		}
+
+		fmt.Fprint(w, `{
+		  "status": [
+		    {
+		      "domain": "example.com",
+		      "zone": "com",
+		      "status": "active",
+		      "summary": "something active"
+		    },
+		    {
+		      "domain": "example.org",
+		      "zone": "org",
+		      "status": "active",
+		      "summary": "something active"
+		    }
+		  ]
+		}`)
+	})
+
+	statusResponse, err := client.GetStatus("example.com.example.org")
+
+	if err != nil {
+		t.Fatalf("GetStatus() returned error: %v", err)
+	}
+
+	var wantDomain *Domain
+	domains := statusResponse.Domains
+
+	if want, got := 2, len(domains); want != got {
+		t.Errorf("GetStatus() expected to return %v domains, got %v", want, got)
+	}
+
+	wantDomain = &Domain{Name: "example.com", Zone: "com", Status: "active", Summary: "something active"}
+	if !reflect.DeepEqual(&domains[0], wantDomain) {
+		t.Fatalf("GetStatus() returned %+v, want %+v", &domains[0], &wantDomain)
+	}
+}
+
+func TestLive_Client_GetStatus(t *testing.T) {
 	if !domainrLiveTest {
 		t.Skip("skipping live test")
 	}
@@ -35,7 +99,7 @@ func TestLiveGetStatus(t *testing.T) {
 	fmt.Println(statusResponse)
 }
 
-func TestLiveGetSingleStatus(t *testing.T) {
+func TestLive_Client_GetSingleStatus(t *testing.T) {
 	if !domainrLiveTest {
 		t.Skip("skipping live test")
 	}
