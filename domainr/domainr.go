@@ -41,6 +41,24 @@ type Client struct {
 	BaseURL string
 }
 
+// Domain represents a domain name in Domainr
+// and is the result of either a search or status query.
+type Domain struct {
+	// Shared fields
+	Name string `json:"domain"`
+	Zone string `json:"zone"`
+
+	// Status fields
+	Status  string `json:"status"`
+	Summary string `json:"summary"`
+
+	// Search fields
+	Host        string `json:"host"`
+	Subdomain   string `json:"subdomain"`
+	Path        string `json:"path"`
+	RegisterURL string `json:"registerURL"`
+}
+
 // NewClient returns a new Domainr API client.
 func NewClient(clientID string) *Client {
 	client := &Client{ClientID: clientID, BaseURL: defaultBaseURL, HttpClient: &http.Client{}}

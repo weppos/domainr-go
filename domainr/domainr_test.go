@@ -3,6 +3,7 @@ package domainr
 import (
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 )
 
@@ -10,7 +11,17 @@ var (
 	mux    *http.ServeMux
 	client *Client
 	server *httptest.Server
+
+	domainrLiveTest bool
+	domainrClientID string
 )
+
+func init() {
+	domainrClientID = os.Getenv("DOMAINR_CLIENT_ID")
+	if len(domainrClientID) > 0 {
+		domainrLiveTest = true
+	}
+}
 
 func setupMockServer() {
 	mux = http.NewServeMux()

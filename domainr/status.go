@@ -6,20 +6,12 @@ import (
 	"net/http"
 )
 
-// Domain represents a domain name and the corresponding
-// status information as defined by Domainr.
-type Domain struct {
-	Name    string `json:"domain"`
-	Zone    string `json:"zone"`
-	Status  string `json:"status"`
-	Summary string `json:"summary"`
-}
-
+// StatusResponse represents the response from a /status API call.
 type StatusResponse struct {
+	httpResponse *http.Response
+
 	Domains []Domain `json:"status"`
 	// Omit "errors" for now
-
-	httpResponse *http.Response
 }
 
 // Status performs a /status request and returns the results.
