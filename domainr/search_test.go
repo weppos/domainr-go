@@ -37,12 +37,12 @@ func TestClient_Search(t *testing.T) {
 		`)
 	})
 
-	statusResponse, err := client.Search("coffee.io", nil)
+	searchResponse, err := client.Search("coffee.io", nil)
 	if err != nil {
 		t.Fatalf("Search() returned error: %v", err)
 	}
 
-	domains := statusResponse.Domains
+	domains := searchResponse.Domains
 	if want, got := 3, len(domains); want != got {
 		t.Errorf("Search() expected to return %v domains, got %v", want, got)
 	}
