@@ -39,7 +39,7 @@ func TestClient_Status(t *testing.T) {
 		if want, got := "/v2/status", reqUrl.Path; want != got {
 			t.Errorf("Status() /path expected to be `%s`, got `%s`", want, got)
 		}
-		wantQuery, _ := url.ParseQuery(fmt.Sprintf("client_id=%s&domain=example.com,example.org", client.ClientID))
+		wantQuery, _ := url.ParseQuery(fmt.Sprintf("client_id=%s&domain=example.com,example.org", "client-id"))
 		if want, got := wantQuery, reqUrl.Query(); !reflect.DeepEqual(want, got) {
 			t.Errorf("Status() ?query expected to be `%s`, got `%s`", want, got)
 		}
@@ -49,7 +49,7 @@ func TestClient_Status(t *testing.T) {
 		`)
 	})
 
-	statusResponse, err := client.Status([]string{"example.com","example.org"})
+	statusResponse, err := client.Status([]string{"example.com", "example.org"})
 	if err != nil {
 		t.Fatalf("Status() returned error: %v", err)
 	}
@@ -80,7 +80,7 @@ func Test_Status(t *testing.T) {
 		`)
 	})
 
-	domains, err := Status(client, []string{"example.com","example.org"})
+	domains, err := Status(client, []string{"example.com", "example.org"})
 	if err != nil {
 		t.Fatalf("Status() returned error: %v", err)
 	}
@@ -99,7 +99,7 @@ func TestLive_Client_Status(t *testing.T) {
 		t.Skip("skipping live test")
 	}
 
-	client := NewClient(domainrClientID)
+	client := NewClient(NewDomainrAuthentication(domainrClientID))
 
 	statusResponse, err := client.Status([]string{domainrStatusDomains})
 	fmt.Println(err)
@@ -111,7 +111,7 @@ func TestLive_Status(t *testing.T) {
 		t.Skip("skipping live test")
 	}
 
-	client := NewClient(domainrClientID)
+	client := NewClient(NewDomainrAuthentication(domainrClientID))
 	var domains []Domain
 
 	domains, err := Status(client, []string{domainrStatusDomains})
@@ -124,7 +124,7 @@ func TestLive_SingleStatus(t *testing.T) {
 		t.Skip("skipping live test")
 	}
 
-	client := NewClient(domainrClientID)
+	client := NewClient(NewDomainrAuthentication(domainrClientID))
 	var domain *Domain
 
 	domain, err := SingleStatus(client, domainrStatusDomains)

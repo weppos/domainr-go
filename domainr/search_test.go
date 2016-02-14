@@ -27,7 +27,7 @@ func TestClient_Search(t *testing.T) {
 		if want, got := "/v2/search", reqUrl.Path; want != got {
 			t.Errorf("Search() /path expected to be `%s`, got `%s`", want, got)
 		}
-		wantQuery, _ := url.ParseQuery(fmt.Sprintf("client_id=%s&query=coffee.io", client.ClientID))
+		wantQuery, _ := url.ParseQuery(fmt.Sprintf("client_id=%s&query=coffee.io", "client-id"))
 		if want, got := wantQuery, reqUrl.Query(); !reflect.DeepEqual(want, got) {
 			t.Errorf("Search() ?query expected to be `%s`, got `%s`", want, got)
 		}

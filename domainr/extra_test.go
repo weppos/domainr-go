@@ -27,7 +27,7 @@ func TestClient_Zones(t *testing.T) {
 		if want, got := "/v2/zones", reqUrl.Path; want != got {
 			t.Errorf("Zones() /path expected to be `%s`, got `%s`", want, got)
 		}
-		wantQuery, _ := url.ParseQuery(fmt.Sprintf("client_id=%s", client.ClientID))
+		wantQuery, _ := url.ParseQuery(fmt.Sprintf("client_id=%s", "client-id"))
 		if want, got := wantQuery, reqUrl.Query(); !reflect.DeepEqual(want, got) {
 			t.Errorf("Zones() ?query expected to be `%s`, got `%s`", want, got)
 		}

@@ -93,7 +93,7 @@ import (
 func main() {
   clientID := "some-magic-client-id"
 
-  client := domainr.NewClient(clientID)
+  client := domainr.NewClient(NewDomainrAuthentication(clientID))
 
   // Get the status of some domains
   domainResponse, err := client.Status([]string{"example.com", "example.org"})
@@ -106,3 +106,18 @@ func main() {
   fmt.Printf("%s: %s", domain.Name, domain.Summary)
 }
 ```
+
+### Authentication
+
+This library supports both Mashape and Commercial authentication.
+
+```go
+// commercial authentication
+client := domainr.NewClient(NewDomainrAuthentication("client-id"))
+
+// mashape authentication
+client := domainr.NewClient(NewMashapeAuthentication("mashape-api-key"))
+```
+
+The API endpoint is automatically adapted according to the type of authentication selected.
+

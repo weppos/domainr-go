@@ -20,12 +20,14 @@ const (
 	// It is also used in the user-agent identify the client.
 	libraryVersion = "0.2.0"
 
-	// baseURL is the Domainr API URL.
-	defaultBaseURL = "https://api.domainr.com/"
-
 	// userAgent represents the user agent used
 	// when communicating with the Domainr API.
 	userAgent = "domainr-go/" + libraryVersion
+
+	domainrBaseURL = "https://api.domainr.com/"
+	domainrParam   = "client_id"
+	mashapeBaseURL = "https://domainr.p.mashape.com/"
+	mashapeParam   = "mashape-url"
 )
 
 // Client represents a client to the Domainr API.
@@ -34,8 +36,8 @@ type Client struct {
 	// used to communicate with the API.
 	HttpClient *http.Client
 
-	// ClientID token used for authentication.
-	ClientID string
+	// Authenticator used for authentication.
+	auth Authenticator
 
 	// BaseURL for API requests.
 	BaseURL string
@@ -59,9 +61,44 @@ type Domain struct {
 	RegisterURL string `json:"registerURL"`
 }
 
+// The Domainr API requires authentication for all requests.
+// The authenticator interface exposes the requirement for an authentication implementation.
+type Authenticator interface {
+	Param() (string, string)
+	Endpoint() (string)
+}
+
+type authentication struct {
+	key      string
+	value    string
+	endpoint string
+}
+
+// Settings implements Authenticator.
+func (a *authentication) Param() (string, string) {
+	return a.key, a.value
+}
+
+// Endpoint implements Authenticator.
+func (a *authentication) Endpoint() string {
+	return a.endpoint
+}
+
+// Mashape users will use your Mashape API key
+// and the mashape-key= query parameter to authenticate.
+func NewMashapeAuthentication(clientID string) Authenticator {
+	return &authentication{key: mashapeParam, value: clientID, endpoint: mashapeBaseURL}
+}
+
+// High-volume commercial users can use a client_id parameter to authenticate.
+// You need to contact Domainr to obtain an API key.
+func NewDomainrAuthentication(clientID string) Authenticator {
+	return &authentication{key: domainrParam, value: clientID, endpoint: domainrBaseURL}
+}
+
 // NewClient returns a new Domainr API client.
-func NewClient(clientID string) *Client {
-	client := &Client{ClientID: clientID, BaseURL: defaultBaseURL, HttpClient: &http.Client{}}
+func NewClient(auth Authenticator) *Client {
+	client := &Client{auth: auth, BaseURL: auth.Endpoint(), HttpClient: &http.Client{}}
 	return client
 }
 
@@ -79,7 +116,8 @@ func (c *Client) NewRequest(path string) (*http.Request, error) {
 
 	// Append the client_id to the query
 	q := u.Query()
-	q.Add("client_id", c.ClientID)
+	authKey, authValue := c.auth.Param()
+	q.Add(authKey, authValue)
 	u.RawQuery = q.Encode()
 
 	// Build the request
