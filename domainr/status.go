@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 // StatusResponse represents the response from a /status API call.
@@ -15,8 +16,8 @@ type StatusResponse struct {
 }
 
 // Status performs a /status request and returns the results.
-func (c *Client) Status(domains string) (*StatusResponse, error) {
-	req, err := c.NewRequest(fmt.Sprintf("/v2/status?domain=%s", domains))
+func (c *Client) Status(domains []string) (*StatusResponse, error) {
+	req, err := c.NewRequest(fmt.Sprintf("/v2/status?domain=%s", strings.Join(domains, ",")))
 	if err != nil {
 		return nil, err
 	}
@@ -32,14 +33,14 @@ func (c *Client) Status(domains string) (*StatusResponse, error) {
 }
 
 // Status is a shortcut to checks the status of a domains and get the domains contained in the response.
-func Status(client *Client, domains string) ([]Domain, error) {
+func Status(client *Client, domains []string) ([]Domain, error) {
 	statusResponse, err := client.Status(domains)
 	return statusResponse.Domains, err
 }
 
 // Status is a shortcut to checks the status of a single domains
 func SingleStatus(client *Client, domain string) (*Domain, error) {
-	statusResponse, err := client.Status(domain)
+	statusResponse, err := client.Status([]string{domain})
 	if err != nil {
 		return nil, err
 	}

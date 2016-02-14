@@ -49,7 +49,7 @@ func TestClient_Status(t *testing.T) {
 		`)
 	})
 
-	statusResponse, err := client.Status("example.com,example.org")
+	statusResponse, err := client.Status([]string{"example.com","example.org"})
 	if err != nil {
 		t.Fatalf("Status() returned error: %v", err)
 	}
@@ -80,7 +80,7 @@ func Test_Status(t *testing.T) {
 		`)
 	})
 
-	domains, err := Status(client, "example.com,example.org")
+	domains, err := Status(client, []string{"example.com","example.org"})
 	if err != nil {
 		t.Fatalf("Status() returned error: %v", err)
 	}
@@ -101,7 +101,7 @@ func TestLive_Client_Status(t *testing.T) {
 
 	client := NewClient(domainrClientID)
 
-	statusResponse, err := client.Status(domainrStatusDomains)
+	statusResponse, err := client.Status([]string{domainrStatusDomains})
 	fmt.Println(err)
 	fmt.Println(statusResponse)
 }
@@ -114,7 +114,7 @@ func TestLive_Status(t *testing.T) {
 	client := NewClient(domainrClientID)
 	var domains []Domain
 
-	domains, err := Status(client, domainrStatusDomains)
+	domains, err := Status(client, []string{domainrStatusDomains})
 	fmt.Println(err)
 	fmt.Println(domains)
 }

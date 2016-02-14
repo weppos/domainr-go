@@ -95,12 +95,13 @@ func main() {
 
   client := domainr.NewClient(clientID)
 
-  // Get the status of domainr.com
-  domainResponse, err := client.Status("domainr.com")
+  // Get the status of some domains
+  domainResponse, err := client.Status([]string{"example.com", "example.org"})
   if err != nil {
       fmt.Println(err)
       os.Exit(1)
   }
+
   domain := domainResponse.Domains[0]
   fmt.Printf("%s: %s", domain.Name, domain.Summary)
 }
