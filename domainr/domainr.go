@@ -122,6 +122,7 @@ func (c *Client) Do(req *http.Request, obj interface{}) (*http.Response, error) 
 }
 
 type errorMessage struct {
+	Status  string `json:"status"`
 	Message string `json:"message"`
 }
 
@@ -130,6 +131,7 @@ func (c *Client) checkResponse(resp *http.Response) error {
 	case 200:
 		return nil
 	// {"message":"unauthorized: invalid API client ID"}
+	// {"status":"404","message":"No results found."}
 	default:
 		message := errorMessage{}
 		body, err := ioutil.ReadAll(resp.Body)
