@@ -22,8 +22,8 @@ type StatusResponse struct {
 	httpResponse *http.Response
 }
 
-// GetStatus performs a /status request and returns the results.
-func (c *Client) GetStatus(domain string) (*StatusResponse, error) {
+// Status performs a /status request and returns the results.
+func (c *Client) Status(domain string) (*StatusResponse, error) {
 	req, err := c.NewRequest(fmt.Sprintf("/v2/status?domain=%s", domain))
 	if err != nil {
 		return nil, err
@@ -41,7 +41,7 @@ func (c *Client) GetStatus(domain string) (*StatusResponse, error) {
 
 // GetSingleStatus is a handy shortcut to checks the status of a single domain.
 func (c *Client) GetSingleStatus(domain string) (*Domain, error) {
-	statusResponse, err := c.GetStatus(domain)
+	statusResponse, err := c.Status(domain)
 	if err != nil {
 		return nil, err
 	}

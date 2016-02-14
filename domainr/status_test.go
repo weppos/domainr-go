@@ -26,7 +26,7 @@ func init() {
 	}
 }
 
-func TestClient_GetStatus(t *testing.T) {
+func TestClient_Status(t *testing.T) {
 	setupMockServer()
 	defer teardownMockServer()
 
@@ -68,7 +68,7 @@ func TestClient_GetStatus(t *testing.T) {
 		}`)
 	})
 
-	statusResponse, err := client.GetStatus("example.com.example.org")
+	statusResponse, err := client.Status("example.com.example.org")
 
 	if err != nil {
 		t.Fatalf("GetStatus() returned error: %v", err)
@@ -87,14 +87,14 @@ func TestClient_GetStatus(t *testing.T) {
 	}
 }
 
-func TestLive_Client_GetStatus(t *testing.T) {
+func TestLive_Client_Status(t *testing.T) {
 	if !domainrLiveTest {
 		t.Skip("skipping live test")
 	}
 
 	client := NewClient(domainrClientID)
 
-	statusResponse, err := client.GetStatus(domainrStatusDomains)
+	statusResponse, err := client.Status(domainrStatusDomains)
 	fmt.Println(err)
 	fmt.Println(statusResponse)
 }
