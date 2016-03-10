@@ -18,7 +18,7 @@ const (
 	// This is a pro-forma convention given that Go dependencies
 	// tends to be fetched directly from the repo.
 	// It is also used in the user-agent identify the client.
-	libraryVersion = "0.2.0"
+	libraryVersion = "0.5.0"
 
 	// userAgent represents the user agent used
 	// when communicating with the Domainr API.
@@ -65,7 +65,7 @@ type Domain struct {
 // The authenticator interface exposes the requirement for an authentication implementation.
 type Authenticator interface {
 	Param() (string, string)
-	Endpoint() (string)
+	Endpoint() string
 }
 
 type authentication struct {

@@ -6,13 +6,6 @@ A Go client for the [Domainr API](http://domainr.build/).
 [![GoDoc](https://godoc.org/github.com/weppos/domainr-go/domainr?status.svg)](https://godoc.org/github.com/weppos/domainr-go/domainr)
 
 
-## :warning: Development Warning
-
-This library is currently under development, therefore the methods and the implementation should be considered a work-in-progress. Changes in the method naming, method signatures, public or internal APIs may happen at any time.
-
-Use this library at your own risk. :boom:
-
-
 ## Getting started
 
 ```shell
@@ -121,3 +114,7 @@ client := domainr.NewClient(NewMashapeAuthentication("mashape-api-key"))
 
 The API endpoint is automatically adapted according to the type of authentication selected.
 
+
+## License
+
+Copyright (c) 2016 Simone Carletti. This is Free Software distributed under the MIT license.
